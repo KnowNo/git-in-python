@@ -3,8 +3,8 @@ Created on Jun 9, 2014
 
 @author: lzrak47
 '''
-
 from repository import Repository
+
 
 
 class Command(object):
@@ -14,13 +14,12 @@ class Command(object):
     '''
 
     @staticmethod
-    def cmd_init(root, bare):
-        repo = Repository(root, create=True, bare=bare)
-        print repo
+    def cmd_init(workspace, bare):
+        Repository.create_repository(workspace, bare)
 
     @staticmethod
-    def cmd_add():
-        pass
+    def cmd_add(workspace, file):
+        Repository(workspace).stage(file)
 
     @staticmethod
     def cmd_commit():

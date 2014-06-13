@@ -1,7 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-
 '''
 Created on Jun 8, 2014
 
@@ -51,7 +49,15 @@ class Parser(object):
             'add' : {
                 'func' : self._add,
                 'help' : 'Add file contents to the index',
-                'args' : [],
+                'args' : [
+                    {
+                        'name' : 'file',
+                        'properties' :
+                        {
+                            'help' : 'Files to add content from',
+                        },
+                    },
+                ]
             },
                     
             'commit' : {
@@ -74,11 +80,11 @@ class Parser(object):
     }
 
     def _init(self, args):
-        root = os.path.join(os.getcwd(), args.directory)
-        Command.cmd_init(root=root, bare=args.bare)
+        workspace = os.path.join(os.getcwd(), args.directory)
+        Command.cmd_init(workspace=workspace, bare=args.bare)
 
     def _add(self, args):
-        pass
+        Command.cmd_add(os.getcwd(), args.file)
 
     def _commit(self, args):
         pass
