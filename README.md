@@ -6,11 +6,11 @@ It aims to rewrite Git in Python, perhaps with some C code for high performance.
 The file named 'git.py' is the entrance of the whole project.
 
 ##Why
-[The Official Git](https://github.com/git/git) written in C attracts coders all over the world.
+[The Official Git](https://github.com/git/git) written in C attracts hackers all over the world since created.
 
-When I start to use Git, I can't stop thinking that why is Git so unique? How did hackers build it? What are the branches, objects, protocols inside the Git source code?
+When I start using Git, I can't stop thinking about why is Git so unique? How did hackers build it? What are the branches, objects, protocols inside the Git source code?
 
-When people talk about a product is beautiful, they are talking about the outside of the product.But I mean, When the outside of a product is beautiful, the inside of the product is very likely beautiful too such as iPhone, Macbook, BMW and some awesome software.  
+When people talk about a product that is awesome, they are usually talking about the outside of the product.However, I mean when the outside of a product is awesome, the inside of the product is also very likely awesome such as iPhone, MacBook, BMW and some famous software.  
 
 Git is one of them, as we know, created by Linus Torvalds in 2005 with a legendary history: <https://lkml.org/lkml/2005/4/6/121>
 
@@ -38,6 +38,6 @@ Surely, It takes time, It takes patients.
 
 I don't care that at all. I love the fun in this project and the smart people working together.
 
-I like smart people all over the world, especally the **doers** who can always **get things done**,  not the **talkers**.
+I'm interested in all the smart people in the world, especally the **doers** who can always **get things done**,  not the **talkers**.
 
 Let's go.
