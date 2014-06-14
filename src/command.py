@@ -3,8 +3,9 @@ Created on Jun 9, 2014
 
 @author: lzrak47
 '''
-from repository import Repository
+import os
 
+from repository import Repository
 
 
 class Command(object):
@@ -19,7 +20,16 @@ class Command(object):
 
     @staticmethod
     def cmd_add(workspace, file):
-        Repository(workspace).stage(file)
+        if file == '.':
+            file_list = []
+            for root, dirs, files in os.walk('.'):
+                if ".git" in dirs:
+                    dirs.remove('.git')
+                for file in files:
+                    file_list.append(os.path.join(root[2:], file))
+            Repository(workspace).stage(file_list)
+        else:
+            Repository(workspace).stage([file])
 
     @staticmethod
     def cmd_commit():

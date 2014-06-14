@@ -7,7 +7,7 @@ Created on Jun 13, 2014
 import os
 import zlib
 
-from utils import calSha1
+from utils import cal_sha1
 
 
 class BaseObject(object):
@@ -21,7 +21,7 @@ class BaseObject(object):
         Constructor
         '''
         self.content = zlib.compress(content)
-        self.sha1 = calSha1(content)
+        self.sha1 = cal_sha1(content)
         self.path = os.path.join(workspace, '.git', 'objects', self.sha1[:2], self.sha1[2:])
 
 class Blob(BaseObject):

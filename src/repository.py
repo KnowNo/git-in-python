@@ -6,8 +6,9 @@ Created on Jun 9, 2014
 import os
 
 from config import Config
+from index import Index
 from objects import Blob
-from utils import read_file, write_to_file
+from utils import read_file, write_to_file, cal_mode
 
 
 class Repository(object):
@@ -40,15 +41,22 @@ class Repository(object):
         self.workspace = workspace
         
         
-    def stage(self, file):
+    def stage(self, files):
         try:
-            content = read_file(file)
-            blob = Blob(self.workspace, content)
-            if not os.path.exists(blob.path):
-                dir = os.path.dirname(blob.path)
-                if not os.path.exists(dir):
-                    os.makedirs(dir)
-                write_to_file(blob.path, blob.content)
+            index = Index(os.path.join(self.workspace, '.git', 'index'))
+            for file in files:
+                content = read_file(file)
+                blob = Blob(self.workspace, content)
+                if not os.path.exists(blob.path):
+                    dir = os.path.dirname(blob.path)
+                    if not os.path.exists(dir):
+                        os.mkdir(dir)
+                    write_to_file(blob.path, blob.content)
+                stat = os.stat(os.path.join(self.workspace, file))
+                index.add_entry(file, ctime=stat.st_ctime, mtime=stat.st_mtime, dev=stat.st_dev, ino=stat.st_ino, mode=cal_mode(stat.st_mode), \
+                       uid=stat.st_uid, gid=stat.st_gid, size=stat.st_size,sha1=blob.sha1, flags=0)
+            index.write_to_file()
+                    
         except Exception, e:
             print 'stage file %s error: %s' % (file, e)
     
