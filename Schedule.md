@@ -2,7 +2,11 @@
 * init
 * add
 
-###TODO
+###Doing
 * commit
+
+###TODO
 * push
 * clone
+* log
+* diff
