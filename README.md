@@ -21,7 +21,7 @@ This project takes me a lot of time. I have to work during the day so that I can
 ##Requirement
 Rewrite Git in Python seems not something easy, so this project is not for C/Python/Git beginners.
 
-However, don't get frustrated, It's not that hard.You can contrib to this project step by step:
+However, don't get frustrated, It's not that hard.You can contribute to this project step by step:
 
 1. learn C: [The C Programming Language](http://www.amazon.com/C-Programming-Language-2nd-Edition/dp/0131103628)
 2. learn Python: [The Python Tutorial](https://docs.python.org/2/tutorial/index.html)
