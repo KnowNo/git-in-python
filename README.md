@@ -23,7 +23,7 @@ Rewrite Git in Python seems not something easy, so this project is not for C/Pyt
 
 However, don't get frustrated, It's not that hard.You can contribute to this project step by step:
 
-1. learn C: [The C Programming Language](http://www.amazon.com/C-Programming-Language-2nd-Edition/dp/0131103628)
+1. learn C: [The C Programming Language](http://www.iups.org/media/meeting_minutes/C.pdf)
 2. learn Python: [The Python Tutorial](https://docs.python.org/2/tutorial/index.html)
 3. learn Git: [Pro Git](http://git-scm.com/book)
 4. learn Git dev documents: [the official Git technical documents](https://github.com/git/git/tree/master/Documentation/technical)
@@ -36,8 +36,8 @@ Dev the core command of the offical git such as 'init', 'add', 'commit', 'push',
 ##Future
 Surely, It takes time, It takes patients.
 
-I don't care that at all. I only care the fun in this project and the smart people working together.
+I don't care that at all. I love the fun in this project and the smart people working together.
 
-I like all the smart people, especally **doers** who can always **get things done**,  not **talkers**.
+I like smart people all over the world, especally the **doers** who can always **get things done**,  not the **talkers**.
 
 Let's go.
