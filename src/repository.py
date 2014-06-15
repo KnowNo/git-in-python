@@ -101,7 +101,7 @@ class Repository(object):
         commit_time = int(time.time())
         
         #TO FIX
-        commit_timezone = '+0800'
+        commit_timezone = time.strftime("%z", time.gmtime())
         
         commit = Commit(self.workspace, tree_sha1=cur_tree.sha1, parent_sha1=parent_sha1, name=committer_name, email=committer_email, \
                         timestamp=commit_time, timezone=commit_timezone, msg=msg)
