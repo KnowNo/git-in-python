@@ -6,9 +6,11 @@ Created on Jun 14, 2014
 import binascii
 from collections import OrderedDict
 import os
+import stat
 import struct
 
-from utils import Sha1Reader, Sha1Writer
+from objects import Tree
+from utils import Sha1Reader, Sha1Writer, write_object_to_file
 
 
 class Index(object):
@@ -83,8 +85,6 @@ class Index(object):
             f.write(name)
             real_size = ((f.tell() - begin + 8) & ~7)
             f.write('\0' * ((begin + real_size) - f.tell()))
-            
-            
     
     def write_to_file(self):
         # copy-on-write
@@ -94,5 +94,44 @@ class Index(object):
         self._write_entries(f)
         f.close()
         os.rename(lock_file, self.path)
+    
+
+    def do_commit(self, workspace):
+        tree = {}
+        for path, property in self.entries.iteritems():
+            t = tree
+            path_arr = path.split('/')
+            for path_ele in path_arr[:-1]:
+                t = t.setdefault(path_ele, {})
+            t = t.setdefault(path_arr[-1], (property['mode'], property['sha1']))
+        def _build_tree(path):
+            dir_arr = []
+            file_arr = []
+            for name, entry in path.iteritems():
+                if isinstance(entry, dict):
+                    mode = stat.S_IFDIR
+                    sha1 = _build_tree(entry).sha1
+                    dir_arr.append({'name':name, 'mode':mode, 'sha1':sha1})
+                else:
+                    (mode, sha1) = entry
+                    file_arr.append({'name':name, 'mode':mode, 'sha1':sha1})
+            newtree = Tree(workspace, sorted(dir_arr,key = lambda x:x['name']) + sorted(file_arr,key = lambda x:x['name']))
+            write_object_to_file(newtree.path, newtree.content)
+            return newtree
+            
+        return _build_tree(tree)            
+                
+                
+                
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
 
         

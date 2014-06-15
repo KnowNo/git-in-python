@@ -5,8 +5,10 @@ Created on Jun 9, 2014
 '''
 
 import hashlib
+import os
 import stat
 import sys
+
 
 S_IFGITLINK = 0o160000
 
@@ -14,6 +16,12 @@ def write_to_file(path, content):
     f = open(path, 'w')
     f.write(content)
     f.close()
+    
+def write_object_to_file(path, content):       
+    dir = os.path.dirname(path)
+    if not os.path.exists(dir):
+        os.mkdir(dir)
+    write_to_file(path, content)
     
 def read_file(file_name):
     try:

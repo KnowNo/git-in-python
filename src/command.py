@@ -32,8 +32,8 @@ class Command(object):
             Repository(workspace).stage([file])
 
     @staticmethod
-    def cmd_commit():
-        pass
+    def cmd_commit(workspace, msg):
+        Repository(workspace).commit(msg)
 
     @staticmethod
     def cmd_push():

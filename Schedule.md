@@ -1,12 +1,12 @@
 ###Done
 * init
 * add
-
-###Doing
 * commit
 
-###TODO
+###Doing
 * push
+
+###TODO
 * clone
 * log
 * diff

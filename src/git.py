@@ -26,7 +26,7 @@ class Parser(object):
                 'help' : 'Create an empty Git repository or reinitialize an existing one',
                 'args' : [
                     {
-                        'name' : 'directory',
+                        'name' : ['directory'],
                         'properties' :
                         {
                             'help' : 'Directory of the git repository',
@@ -36,7 +36,7 @@ class Parser(object):
                     },
                           
                     {
-                        'name' : '--bare',
+                        'name' : ['--bare'],
                         'properties' :
                         {
                             'help' : 'Create a bare repository',
@@ -51,7 +51,7 @@ class Parser(object):
                 'help' : 'Add file contents to the index',
                 'args' : [
                     {
-                        'name' : 'file',
+                        'name' : ['file'],
                         'properties' :
                         {
                             'help' : 'Files to add content from',
@@ -63,7 +63,16 @@ class Parser(object):
             'commit' : {
                 'func' : self._commit,
                 'help' : 'Record changes to the repositoryx',
-                'args' : [],
+                'args' : [
+                    {
+                        'name' : ['-m', '--message'],
+                        'properties' :
+                        {
+                            'help' : 'Use the given msg as the commit message',
+                            'dest' : 'msg',
+                        }
+                    }
+                ],
             },
                     
             'push' : {
@@ -87,7 +96,7 @@ class Parser(object):
         Command.cmd_add(os.getcwd(), args.file)
 
     def _commit(self, args):
-        pass
+        Command.cmd_commit(os.getcwd(), args.msg)
 
     def _push(self, args):
         pass
@@ -102,7 +111,7 @@ class Parser(object):
         for name, detail in self.commands.iteritems():
             subparser = subparsers.add_parser(name, help=detail['help'])
             for arg in detail['args']:
-                subparser.add_argument(arg['name'], **arg['properties'])
+                subparser.add_argument(*arg['name'], **arg['properties'])
                 
         args_res = parser.parse_args()
         self.commands[sys.argv[1]]['func'](args_res)
