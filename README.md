@@ -38,6 +38,6 @@ Surely, It takes time, It takes patients.
 
 I don't care that at all. I love the fun in this project and the smart people working together.
 
-I'm interested in the smart people all over the world, especally the **doers** who can always **get things done**,  not the **talkers**.
+I'm interested in the smart people all over the world, especially the **doers** who can always **get things done**,  not the **talkers**.
 
 Let's go.
