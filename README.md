@@ -31,7 +31,7 @@ However, don't get frustrated, It's not that hard.You can contribute to this pro
 6. fork this project, fix bugs, add features, and even rebuild the architecture.
 
 ##Target
-Dev the core command of the offical git such as 'init', 'add', 'commit', 'push', 'clone' that when we run git.py xxx, the result is the same as git xxx. Otherwise, someting is wrong maybe.
+Dev the core command of the offical git such as 'init', 'add', 'commit', 'push', 'clone' that when we run git.py xxx, the result is the same as git xxx. Otherwise, there is something wrong maybe.
 
 ##Future
 Surely, It takes time, It takes patients.
