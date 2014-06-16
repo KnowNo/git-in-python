@@ -107,3 +107,8 @@ class Repository(object):
                         timestamp=commit_time, timezone=commit_timezone, msg=msg)
         write_object_to_file(commit.path, commit.content)
         write_to_file(ref_path, commit.sha1)
+        
+    def delete(self, file):
+        del self.index.entries[file]
+        self.index.write_to_file()
+        

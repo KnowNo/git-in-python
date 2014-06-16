@@ -59,10 +59,32 @@ class Parser(object):
                     },
                 ]
             },
+                         
+            'rm' : {
+                'func' : self._rm,
+                'help' : 'Remove files from the working tree and from the index',
+                'args' : [
+                    {
+                        'name' : ['file'],
+                        'properties' :
+                        {
+                            'help' : 'Files to remove',
+                        },
+                    },
+                    {
+                        'name' : ['--cached'],
+                        'properties' :
+                        {
+                            'help' : 'Remove files only from the index',
+                            'action' : 'store_true',
+                        },
+                    },
+                ]
+            },
                     
             'commit' : {
                 'func' : self._commit,
-                'help' : 'Record changes to the repositoryx',
+                'help' : 'Record changes to the repository',
                 'args' : [
                     {
                         'name' : ['-m', '--message'],
@@ -94,6 +116,9 @@ class Parser(object):
 
     def _add(self, args):
         Command.cmd_add(os.getcwd(), args.file)
+        
+    def _rm(self, args):
+        Command.cmd_rm(os.getcwd(), args.file, args.cached)
 
     def _commit(self, args):
         Command.cmd_commit(os.getcwd(), args.msg)

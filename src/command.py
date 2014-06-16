@@ -32,6 +32,12 @@ class Command(object):
             Repository(workspace).stage([file])
 
     @staticmethod
+    def cmd_rm(workspace, file, cached):
+        Repository(workspace).delete(file)
+        if not cached:
+            os.remove(file)
+        
+    @staticmethod
     def cmd_commit(workspace, msg):
         Repository(workspace).commit(msg)
 

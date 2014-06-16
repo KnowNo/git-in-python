@@ -2,6 +2,7 @@
 * init
 * add
 * commit
+* rm
 
 ###Doing
 * push
@@ -10,3 +11,4 @@
 * clone
 * log
 * diff
+......

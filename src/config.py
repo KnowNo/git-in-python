@@ -19,7 +19,7 @@ class Config(object):
         '''
         self.workspace = workspace
         self.config_dict = {}
-        paths = ['/etc/config', os.path.expanduser('~') + '/.gitconfig', os.path.join(workspace, '.git', 'config')]
+        paths = ['/etc/gitconfig', os.path.expanduser('~') + '/.gitconfig', os.path.join(workspace, '.git', 'config')]
         for path in paths:
             if os.path.exists(path):
                 self._parse_config_to_dict(path)

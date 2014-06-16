@@ -121,17 +121,3 @@ class Index(object):
             
         return _build_tree(tree)            
                 
-                
-                
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-        
