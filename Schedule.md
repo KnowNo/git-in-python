@@ -10,6 +10,7 @@
 
 ###TODO
 * clone
-* log
 * diff
+* merge
+
 ......
