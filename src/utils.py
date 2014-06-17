@@ -8,6 +8,7 @@ import hashlib
 import os
 import stat
 import sys
+import tempfile
 
 
 S_IFGITLINK = 0o160000
@@ -48,6 +49,13 @@ def cal_mode(mode):
     ret = stat.S_IFREG | 0o644
     ret |= (mode & 0o111)
     return ret
+
+def less_str(str):
+    f = tempfile.NamedTemporaryFile()
+    f.write(str)
+    f.seek(0)
+    os.system("cat %s | less" % f.name)
+    f.close()
 
 
 class Sha1Reader(object):

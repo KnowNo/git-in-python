@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 Created on Jun 8, 2014
@@ -97,6 +97,24 @@ class Parser(object):
                 ],
             },
                     
+            'log' : {
+                'func' : self._log,
+                'help' : 'Show commit logs',
+                'args' : [
+                    {
+                        'name' : ['-n'],
+                        'properties' :
+                        {
+                            'help' : 'Limit the number of commits to output',
+                            'nargs' : '?', 
+                            'type' : int, 
+                            'dest' : 'num',
+                            'default' : float('infinity'),
+                        }
+                    },
+                ],
+            },
+                         
             'push' : {
                 'func' : self._push,
                 'help' : 'Update remote refs along with associated objects',
@@ -123,6 +141,9 @@ class Parser(object):
     def _commit(self, args):
         Command.cmd_commit(os.getcwd(), args.msg)
 
+    def _log(self, args):
+        Command.cmd_log(os.getcwd(), args.num)
+    
     def _push(self, args):
         pass
 

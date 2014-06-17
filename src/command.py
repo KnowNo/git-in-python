@@ -42,6 +42,10 @@ class Command(object):
         Repository(workspace).commit(msg)
 
     @staticmethod
+    def cmd_log(workspace, num):
+        Repository(workspace).show_log(num)
+    
+    @staticmethod
     def cmd_push():
         pass
 

@@ -3,6 +3,7 @@
 * add
 * commit
 * rm
+* log
 
 ###Doing
 * push

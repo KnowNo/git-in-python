@@ -9,7 +9,8 @@ import time
 from config import Config
 from index import Index
 from objects import Blob, Commit
-from utils import read_file, write_to_file, cal_mode, write_object_to_file
+from utils import read_file, write_to_file, cal_mode, write_object_to_file, \
+    less_str
 
 
 class Repository(object):
@@ -42,6 +43,14 @@ class Repository(object):
         self.workspace = workspace
         self.index = Index(os.path.join(workspace, '.git', 'index'))
         self.config = Config(workspace)
+        self.head_path = self._get_head_path()
+        self.head_tree = None
+        if os.path.exists(self.head_path):
+            self.head_tree = read_file(self.head_path).strip()
+    
+    def _get_head_path(self):
+        branch_name = read_file(os.path.join(self.workspace, '.git', 'HEAD')).strip('\n').rsplit('/', 1)[-1]
+        return os.path.join(self.workspace, '.git', 'refs', 'heads', branch_name)
         
     def stage(self, files):
         try:
@@ -89,26 +98,40 @@ class Repository(object):
         content = Config.create_config(init_config_dict)
         write_to_file('config', content)
     
-    def commit(self, msg, ref='HEAD'):
-        cur_tree = self.index.do_commit(self.workspace)
-        branch_name = read_file(os.path.join(self.workspace, '.git', 'HEAD')).strip('\n').rsplit('/', 1)[-1]
-        ref_path = os.path.join(self.workspace, '.git', 'refs', 'heads', branch_name)
-        parent_sha1 = None
-        if os.path.exists(ref_path):
-            parent_sha1 = read_file(ref_path) 
+    def commit(self, msg):
+        new_tree = self.index.do_commit(self.workspace)
+        
         committer_name = self.config.config_dict['user']['name']
         committer_email = '<%s>' %  (self.config.config_dict['user']['email'])
         commit_time = int(time.time())
-        
-        #TO FIX
         commit_timezone = time.strftime("%z", time.gmtime())
         
-        commit = Commit(self.workspace, tree_sha1=cur_tree.sha1, parent_sha1=parent_sha1, name=committer_name, email=committer_email, \
+        commit = Commit(self.workspace, sha1=None, tree_sha1=new_tree.sha1, parent_sha1=self.head_tree, name=committer_name, email=committer_email, \
                         timestamp=commit_time, timezone=commit_timezone, msg=msg)
         write_object_to_file(commit.path, commit.content)
-        write_to_file(ref_path, commit.sha1)
+        write_to_file(self.head_path, commit.sha1)
         
     def delete(self, file):
         del self.index.entries[file]
         self.index.write_to_file()
+    
+    def show_log(self, num):
+        cur_commit = Commit(self.workspace, sha1=self.head_tree)
+        print_str = cur_commit.raw_content 
+        while num > 1 and cur_commit.parent_sha1:
+            num -= 1
+            parent_commit = Commit(self.workspace, sha1=cur_commit.parent_sha1)
+            print_str += '\n%s' % (parent_commit.raw_content) 
+            cur_commit = parent_commit
+        less_str(print_str)
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
