@@ -7,16 +7,14 @@ Created on Jun 9, 2014
 import hashlib
 import os
 import stat
-import sys
 import tempfile
 
 
 S_IFGITLINK = 0o160000
 
 def write_to_file(path, content):
-    f = open(path, 'w')
-    f.write(content)
-    f.close()
+    with open(path, 'w') as f:
+        f.write(content)
     
 def write_object_to_file(path, content):       
     dir = os.path.dirname(path)
@@ -25,14 +23,8 @@ def write_object_to_file(path, content):
     write_to_file(path, content)
     
 def read_file(file_name):
-    try:
-        f = open(file_name, 'r')
-        content = f.read()
-        f.close()
-        return content
-    except Exception, e:
-        print "open file %s error: %s" % (file_name, e)
-        sys.exit(1)
+    with open(file_name, 'r') as f:
+        return f.read()
 
 def cal_sha1(content):
     sha1 = hashlib.sha1()
@@ -51,12 +43,10 @@ def cal_mode(mode):
     return ret
 
 def less_str(str):
-    f = tempfile.NamedTemporaryFile()
-    f.write(str)
-    f.seek(0)
-    os.system("cat %s | less" % f.name)
-    f.close()
-
+    with tempfile.NamedTemporaryFile() as f:
+        f.write(str)
+        f.seek(0)
+        os.system("cat %s | less" % f.name)
 
 class Sha1Reader(object):
 
