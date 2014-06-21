@@ -96,7 +96,7 @@ class Index(object):
         os.rename(lock_file, self.path)
     
 
-    def do_commit(self, workspace):
+    def do_commit(self):
         tree = {}
         for path, property in self.entries.iteritems():
             t = tree
@@ -115,7 +115,7 @@ class Index(object):
                 else:
                     (mode, sha1) = entry
                     file_arr.append({'name':name, 'mode':mode, 'sha1':sha1})
-            newtree = Tree(workspace, sorted(dir_arr,key = lambda x:x['name']) + sorted(file_arr,key = lambda x:x['name']))
+            newtree = Tree(sorted(dir_arr,key = lambda x:x['name']) + sorted(file_arr,key = lambda x:x['name']))
             write_object_to_file(newtree.path, newtree.content)
             return newtree
             

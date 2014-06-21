@@ -115,6 +115,12 @@ class Parser(object):
                 ],
             },
                          
+            'status' : {
+                'func' : self._status,
+                'help' : 'Show the working tree status',
+                'args' : [],
+            },
+                         
             'push' : {
                 'func' : self._push,
                 'help' : 'Update remote refs along with associated objects',
@@ -133,16 +139,19 @@ class Parser(object):
         Command.cmd_init(workspace=workspace, bare=args.bare)
 
     def _add(self, args):
-        Command.cmd_add(os.getcwd(), args.file)
+        Command.cmd_add(args.file)
         
     def _rm(self, args):
-        Command.cmd_rm(os.getcwd(), args.file, args.cached)
+        Command.cmd_rm(args.file, args.cached)
 
     def _commit(self, args):
-        Command.cmd_commit(os.getcwd(), args.msg)
+        Command.cmd_commit(args.msg)
 
     def _log(self, args):
-        Command.cmd_log(os.getcwd(), args.num)
+        Command.cmd_log(args.num)
+        
+    def _status(self, args):
+        Command.cmd_status()
     
     def _push(self, args):
         pass

@@ -5,26 +5,27 @@ Created on Jun 9, 2014
 '''
 
 import os
+
+from constants import CONFIG_PATH
 from utils import read_file
+
 
 class Config(object):
     '''
     config file
     '''
 
-
-    def __init__(self, workspace):
+    def __init__(self):
         '''
         Constructor
         '''
-        self.workspace = workspace
         self.config_dict = {}
-        paths = ['/etc/gitconfig', os.path.expanduser('~') + '/.gitconfig', os.path.join(workspace, '.git', 'config')]
+        paths = ['/etc/gitconfig', os.path.expanduser('~') + '/.gitconfig', CONFIG_PATH]
         for path in paths:
             if os.path.exists(path):
                 self._parse_config_to_dict(path)
-    
-    
+
+
     def _parse_config_to_dict(self, path):
         content = read_file(path)
         for entry in content.split('[')[1:]:
@@ -36,22 +37,15 @@ class Config(object):
                 key = key_val.split(' = ')[0].strip()
                 val = key_val.split(' = ')[1].strip()
                 self.config_dict[index][key] = val
-             
-    
+
+
     @staticmethod
     def create_config(config_dict):
         str = ''
         for index, key_value in config_dict.iteritems():
             str += '[%s]\n' % (index)
             for key, value in key_value.iteritems():
-                str +='\t%s = %s\n' % (key, value)
+                str += '\t%s = %s\n' % (key, value)
         return str
-        
-    
-            
-            
-        
-    
-    
-    
-        
+
+

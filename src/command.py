@@ -5,7 +5,9 @@ Created on Jun 9, 2014
 '''
 import os
 
+from constants import GIT_DIR
 from repository import Repository
+from utils import get_all_files_in_dir
 
 
 class Command(object):
@@ -19,31 +21,29 @@ class Command(object):
         Repository.create_repository(workspace, bare)
 
     @staticmethod
-    def cmd_add(workspace, file):
+    def cmd_add(file):
         if file == '.':
-            file_list = []
-            for root, dirs, files in os.walk('.'):
-                if ".git" in dirs:
-                    dirs.remove('.git')
-                for file in files:
-                    file_list.append(os.path.join(root[2:], file))
-            Repository(workspace).stage(file_list)
+            Repository().stage(get_all_files_in_dir('.', GIT_DIR))
         else:
-            Repository(workspace).stage([file])
+            Repository().stage([file])
 
     @staticmethod
-    def cmd_rm(workspace, file, cached):
-        Repository(workspace).delete(file)
+    def cmd_rm(file, cached):
+        Repository().delete(file)
         if not cached:
             os.remove(file)
         
     @staticmethod
-    def cmd_commit(workspace, msg):
-        Repository(workspace).commit(msg)
+    def cmd_commit(msg):
+        Repository().commit(msg)
 
     @staticmethod
-    def cmd_log(workspace, num):
-        Repository(workspace).show_log(num)
+    def cmd_log(num):
+        Repository().show_log(num)
+    
+    @staticmethod
+    def cmd_status():
+        Repository().show_status()
     
     @staticmethod
     def cmd_push():

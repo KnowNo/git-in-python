@@ -42,11 +42,24 @@ def cal_mode(mode):
     ret |= (mode & 0o111)
     return ret
 
+def get_file_mode(path):
+    res = os.stat(path)
+    return cal_mode(res.st_mode)
+
 def less_str(str):
     with tempfile.NamedTemporaryFile() as f:
         f.write(str)
         f.seek(0)
         os.system("cat %s | less" % f.name)
+
+def get_all_files_in_dir(dir, *exclude_dirs):
+    file_list = []
+    for root, dirs, files in os.walk(dir):
+        for exclude_dir in set(exclude_dirs).intersection(set(dirs)):
+            dirs.remove(exclude_dir)
+        for file in files:
+            file_list.append(os.path.join(root[2:], file))
+    return file_list
 
 class Sha1Reader(object):
 
