@@ -4,6 +4,7 @@
 * commit
 * rm
 * log
+* status
 
 ###Doing
 * push
