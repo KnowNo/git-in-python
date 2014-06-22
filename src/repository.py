@@ -139,25 +139,23 @@ class Repository(object):
         unstaged_files = self._get_unstaged_files()
         uncommitted_files = self._get_uncommitted_files()
         print_str = 'On branch %s\n' % (self.branch_name)
-        if uncommitted_files:
-            print_str += 'Changes to be committed:\n  (use "git reset HEAD <file>..." to unstage)\n\n'
-            for change, files in uncommitted_files.iteritems():
-                for file in files:
-                    print_str += colored('\t%s:\t%s\n' % (change, file), 'green')
-            print_str += '\n'
         
-        if unstaged_files:
-            print_str += 'Changes not staged for commit:\n  (use "git add <file>..." to update what will be committed)\n'
-            print_str += '  (use "git checkout -- <file>..." to discard changes in working directory)\n\n'
-            for change, files in unstaged_files.iteritems():
-                for file in files:
-                    print_str += colored('\t%s:\t%s\n' % (change, file), 'red')
-            print_str += '\n'
+        print_str += 'Changes to be committed:\n  (use "git reset HEAD <file>..." to unstage)\n\n'
+        for change, files in uncommitted_files.iteritems():
+            for file in files:
+                print_str += colored('\t%s:\t%s\n' % (change, file), 'green')
+        print_str += '\n'
         
-        if untracked_files:
-            print_str += 'Untracked files:\n  (use "git add <file>..." to include in what will be committed)\n\n'
-            for file in untracked_files:
-                print_str += colored('\t%s\n' % file, 'red')
-            print_str += '\n'
+        print_str += 'Changes not staged for commit:\n  (use "git add <file>..." to update what will be committed)\n'
+        print_str += '  (use "git checkout -- <file>..." to discard changes in working directory)\n\n'
+        for change, files in unstaged_files.iteritems():
+            for file in files:
+                print_str += colored('\t%s:\t%s\n' % (change, file), 'red')
+        print_str += '\n'
+        
+        print_str += 'Untracked files:\n  (use "git add <file>..." to include in what will be committed)\n\n'
+        for file in untracked_files:
+            print_str += colored('\t%s\n' % file, 'red')
+        print_str += '\n'
         
         print print_str
