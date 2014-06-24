@@ -4,8 +4,7 @@
 * commit
 * rm
 * log
-* status
-* .gitignore
+* status(with .gitignore support)
 * branch
 
 ###Doing
