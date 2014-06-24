@@ -3,9 +3,9 @@ This is the git-in-python project.
 
 It aims to rewrite Git in Python, perhaps with some C code for high performance.
 
-'git.py' is the entrance of the whole project.
+[git.py](https://github.com/lizherui/git-in-python/blob/master/src/git.py) is the entrance of the whole project.
 
-Please read 'CodingStyle.md', 'Schedule.md' before contributing and 'Requirements' before running.
+Please read [CodingStyle](https://github.com/lizherui/git-in-python/blob/master/CodingStyle.md), [Schedule](https://github.com/lizherui/git-in-python/blob/master/Schedule.md) before contributing and [Requirements](https://github.com/lizherui/git-in-python/blob/master/Requirements) before running.
 
 ##Why
 [The Official Git](https://github.com/git/git) written in C attracts hackers all over the world since created.
