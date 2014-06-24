@@ -3,7 +3,9 @@ This is the git-in-python project.
 
 It aims to rewrite Git in Python, perhaps with some C code for high performance.
 
-The file named 'git.py' is the entrance of the whole project.
+'git.py' is the entrance of the whole project.
+
+Please read 'CodingStyle.md', 'Schedule.md' before contributing and 'Requirements' before running.
 
 ##Why
 [The Official Git](https://github.com/git/git) written in C attracts hackers all over the world since created.
@@ -18,7 +20,10 @@ So, curiosity drives me to look inside [Git](https://github.com/git/git) and rew
 
 This project takes me a lot of time. I have to work for company during the day so that I can only dev this project during a few hours at night.
 
-##Requirement
+##Target
+Dev the core command of the official git such as 'init', 'add', 'commit', 'push', 'clone' that when we run git.py xxx, the result is the same as git xxx. Otherwise, there is something wrong maybe.
+
+##Contribute
 Rewrite Git in Python seems not something easy, so this project is not for C/Python/Git beginners.
 
 However, don't get frustrated, It's not that hard.You can contribute to this project step by step:
@@ -29,9 +34,6 @@ However, don't get frustrated, It's not that hard.You can contribute to this pro
 4. read Git dev documents: [the official Git technical documents](https://github.com/git/git/tree/master/Documentation/technical)
 5. understand Git source code: [the official Git source code](https://github.com/git/git)
 6. fork this project, fix bugs, add features, and even rebuild the architecture.
-
-##Target
-Dev the core command of the official git such as 'init', 'add', 'commit', 'push', 'clone' that when we run git.py xxx, the result is the same as git xxx. Otherwise, there is something wrong maybe.
 
 ##Future
 Surely, It takes time, It takes patients.
