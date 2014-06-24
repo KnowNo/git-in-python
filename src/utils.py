@@ -66,9 +66,12 @@ def get_all_files_in_dir(dir, *exclude_dirs):
     return file_list
 
 def filter_by_gitignore(raw_list):
-    with open(GITIGNORE_PATH, 'r') as fh:
-        spec = pathspec.PathSpec.from_lines(pathspec.GitIgnorePattern, fh)
-    return set(raw_list).difference(spec.match_files(raw_list))
+    if not os.path.exists(GITIGNORE_PATH):
+        return raw_list
+    else:
+        with open(GITIGNORE_PATH, 'r') as fh:
+            spec = pathspec.PathSpec.from_lines(pathspec.GitIgnorePattern, fh)
+        return set(raw_list).difference(spec.match_files(raw_list))
 
 class Sha1Reader(object):
 
