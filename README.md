@@ -23,7 +23,7 @@ This project takes me a lot of time. I have to work for company during the day s
 ##Target
 Dev the core command of the official git such as 'init', 'add', 'commit', 'push', 'clone' that when we run git.py xxx, the result is the same as git xxx. Otherwise, there is something wrong maybe.
 
-##Contribute
+##Contribution
 Rewrite Git in Python seems not something easy, so this project is not for C/Python/Git beginners.
 
 However, don't get frustrated, It's not that hard.You can contribute to this project step by step:

@@ -8,8 +8,9 @@ import time
 
 from termcolor import colored
 
+from branch import Branch
 from config import Config
-from constants import INDEX_PATH, GIT_DIR, HEAD_PATH, REF_HEADS_DIR, INIT_DIR, \
+from constants import INDEX_PATH, GIT_DIR, INIT_DIR, \
     INIT_FILE, CONFIG_PATH
 from index import Index
 from objects import Blob, Commit, Tree
@@ -25,11 +26,7 @@ class Repository(object):
         self.index = Index(INDEX_PATH)
         self.all_files = get_all_files_in_dir('.', GIT_DIR)
         self.config = Config()
-        self.branch_name = read_file(HEAD_PATH).strip('\n').rsplit('/', 1)[-1]
-        self.head_branch = os.path.join(REF_HEADS_DIR, self.branch_name)
-        self.head_commit = None
-        if os.path.exists(self.head_branch):
-            self.head_commit = read_file(self.head_branch).strip()
+        self.branch = Branch()
 
     def stage(self, files):
         try:
@@ -84,17 +81,17 @@ class Repository(object):
         commit_time = int(time.time())
         commit_timezone = time.strftime("%z", time.gmtime())
 
-        commit = Commit(sha1=None, tree_sha1=new_tree.sha1, parent_sha1=self.head_commit, name=committer_name, email=committer_email, \
+        commit = Commit(sha1=None, tree_sha1=new_tree.sha1, parent_sha1=self.branch.head_commit, name=committer_name, email=committer_email, \
                         timestamp=commit_time, timezone=commit_timezone, msg=msg)
         write_object_to_file(commit.path, commit.content)
-        write_to_file(self.head_branch, commit.sha1)
+        write_to_file(self.branch.head_path, commit.sha1)
 
     def delete(self, file):
         del self.index.entries[file]
         self.index.write_to_file()
 
     def show_log(self, num):
-        cur_commit = Commit(sha1=self.head_commit)
+        cur_commit = Commit(sha1=self.branch.head_commit)
         print_str = cur_commit.raw_content
         while num > 1 and cur_commit.parent_sha1:
             num -= 1
@@ -122,10 +119,10 @@ class Repository(object):
 
 
     def _get_uncommitted_files(self):
-        if not self.head_commit:
+        if not self.branch.head_commit:
             return {}
 
-        tree = Tree(sha1=Commit(sha1=self.head_commit).tree)
+        tree = Tree(sha1=Commit(sha1=self.branch.head_commit).tree)
         tree_objects = tree.parse_objects()
         return {
             'modified': [name for name in set(self.index.entries).intersection(set(tree_objects)) \
@@ -139,7 +136,7 @@ class Repository(object):
         untracked_files = self._get_untracked_files()
         unstaged_files = self._get_unstaged_files()
         uncommitted_files = self._get_uncommitted_files()
-        print_str = 'On branch %s\n' % (self.branch_name)
+        print_str = 'On branch %s\n' % (self.branch.head_name)
 
         print_str += 'Changes to be committed:\n  (use "git reset HEAD <file>..." to unstage)\n\n'
         for change, files in uncommitted_files.iteritems():

@@ -5,6 +5,8 @@ Created on Jun 9, 2014
 '''
 import os
 
+from termcolor import colored
+
 from constants import GIT_DIR
 from repository import Repository
 from utils import get_all_files_in_dir, filter_by_gitignore
@@ -44,6 +46,17 @@ class Command(object):
     @staticmethod
     def cmd_status():
         Repository().show_status()
+    
+    @staticmethod
+    def cmd_branch(name, is_deleted):
+        repo = Repository()
+        if not name:
+            for branch in repo.branch.get_all_branches():
+                print '* %s' % colored(branch, 'green') if branch == repo.branch.head_name else '  %s' % branch
+        elif is_deleted:
+            repo.branch.delete_branch(name)
+        else :
+            repo.branch.add_branch(name)
     
     @staticmethod
     def cmd_push():

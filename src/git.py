@@ -121,6 +121,30 @@ class Parser(object):
                 'args' : [],
             },
                          
+            'branch' : {
+                'func' : self._branch,
+                'help' : 'List, create, or delete branches',
+                'args' : [
+                    {
+                        'name' : ['name'],
+                        'properties' :
+                        {
+                            'help' : 'The name of the branch to create or delete',
+                            'nargs' : '?', 
+                            'default' : '',
+                        }
+                    },
+                    {
+                        'name' : ['-d'],
+                        'properties' :
+                        {
+                            'help' : 'Delete a branch.',
+                            'action' : 'store_true',
+                            'dest' : 'is_deleted',
+                        }
+                    }
+                ],
+            },
             'push' : {
                 'func' : self._push,
                 'help' : 'Update remote refs along with associated objects',
@@ -152,6 +176,9 @@ class Parser(object):
         
     def _status(self, args):
         Command.cmd_status()
+    
+    def _branch(self, args):
+        Command.cmd_branch(args.name, args.is_deleted)
     
     def _push(self, args):
         pass
