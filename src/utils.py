@@ -9,6 +9,10 @@ import os
 import stat
 import tempfile
 
+import pathspec
+
+from constants import GITIGNORE_PATH
+
 
 S_IFGITLINK = 0o160000
 
@@ -60,6 +64,11 @@ def get_all_files_in_dir(dir, *exclude_dirs):
         for file in files:
             file_list.append(os.path.join(root[2:], file))
     return file_list
+
+def filter_by_gitignore(raw_list):
+    with open(GITIGNORE_PATH, 'r') as fh:
+        spec = pathspec.PathSpec.from_lines(pathspec.GitIgnorePattern, fh)
+    return set(raw_list).difference(spec.match_files(raw_list))
 
 class Sha1Reader(object):
 

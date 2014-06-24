@@ -7,7 +7,7 @@ import os
 
 from constants import GIT_DIR
 from repository import Repository
-from utils import get_all_files_in_dir
+from utils import get_all_files_in_dir, filter_by_gitignore
 
 
 class Command(object):
@@ -23,7 +23,7 @@ class Command(object):
     @staticmethod
     def cmd_add(file):
         if file == '.':
-            Repository().stage(get_all_files_in_dir('.', GIT_DIR))
+            Repository().stage(filter_by_gitignore(get_all_files_in_dir('.', GIT_DIR)))
         else:
             Repository().stage([file])
 

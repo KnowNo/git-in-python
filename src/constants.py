@@ -14,6 +14,8 @@ HEAD_PATH = os.path.join(GIT_DIR, 'HEAD')
 
 CONFIG_PATH = os.path.join(GIT_DIR, 'config')
 
+GITIGNORE_PATH = '.gitignore'
+
 DESCRIPTION_PATH = os.path.join(GIT_DIR, 'description')
 
 BRANCHES_DIR = os.path.join(GIT_DIR, 'branches')

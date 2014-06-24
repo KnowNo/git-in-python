@@ -5,6 +5,7 @@
 * rm
 * log
 * status
+* .gitignore
 
 ###Doing
 * push
