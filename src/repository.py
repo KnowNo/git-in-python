@@ -145,6 +145,9 @@ class Repository(object):
                 for file in files:
                     print_str += colored('\t%s:\t%s\n' % (change, file), 'green')
             print_str += '\n'
+        else:
+            print_str += '\nno changes added to commit\n\n'
+            
         
         if unstaged_files['modified'] or unstaged_files['deleted']:
             print_str += 'Changes not staged for commit:\n  (use "git add <file>..." to update what will be committed)\n'
@@ -153,6 +156,7 @@ class Repository(object):
                 for file in files:
                     print_str += colored('\t%s:\t%s\n' % (change, file), 'red')
             print_str += '\n'
+            
         
         if untracked_files:
             print_str += 'Untracked files:\n  (use "git add <file>..." to include in what will be committed)\n\n'
