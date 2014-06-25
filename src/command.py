@@ -59,6 +59,15 @@ class Command(object):
             repo.branch.add_branch(name)
     
     @staticmethod
+    def cmd_reset(commit_sha1, is_soft, is_hard):
+        repo = Repository()
+        repo.update_head_commit(commit_sha1)
+        if not is_soft:
+            repo.rebuild_index_from_commit(commit_sha1)
+            if is_hard:
+                repo.rebuild_working_tree()
+    
+    @staticmethod
     def cmd_push():
         pass
 

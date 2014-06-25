@@ -16,15 +16,17 @@ from constants import GITIGNORE_PATH
 
 S_IFGITLINK = 0o160000
 
-def write_to_file(path, content):
+def write_to_file(path, content, mode=None):       
+    dir = os.path.dirname(path)
+    
+    if dir and not os.path.exists(dir):
+        os.makedirs(dir)
+        
     with open(path, 'w') as f:
         f.write(content)
-    
-def write_object_to_file(path, content):       
-    dir = os.path.dirname(path)
-    if not os.path.exists(dir):
-        os.mkdir(dir)
-    write_to_file(path, content)
+        
+    if mode:
+        os.chmod(path, mode)
     
 def read_file(file_name):
     with open(file_name, 'r') as f:

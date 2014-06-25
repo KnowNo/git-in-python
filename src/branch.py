@@ -7,7 +7,7 @@ import os
 import shutil
 
 from constants import HEAD_PATH, REF_HEADS_DIR
-from utils import read_file, get_all_files_in_dir
+from utils import read_file
 
 
 class Branch(object):

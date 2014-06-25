@@ -10,7 +10,7 @@ import stat
 import struct
 
 from objects import Tree
-from utils import Sha1Reader, Sha1Writer, write_object_to_file
+from utils import Sha1Reader, Sha1Writer, write_to_file
 
 
 class Index(object):
@@ -33,7 +33,7 @@ class Index(object):
         return entries_num
     
     
-    def add_entry(self, name, **kwargs):
+    def set_entry(self, name, **kwargs):
         self.entries[name] = kwargs
         
     def _parse_entries(self, f):
@@ -46,7 +46,7 @@ class Index(object):
         real_size = ((f.tell() - begin + 8) & ~7)
         f.read((begin + real_size) - f.tell())
         
-        self.add_entry(name, ctime=ctime, mtime=mtime, dev=dev, ino=ino, mode=mode, \
+        self.set_entry(name, ctime=ctime, mtime=mtime, dev=dev, ino=ino, mode=int(mode), \
                        uid=uid, gid=gid, size=size,sha1=binascii.hexlify(sha1), flags=flags & ~0x0fff)
     
     def _parse_file(self):
@@ -116,7 +116,7 @@ class Index(object):
                     (mode, sha1) = entry
                     file_arr.append({'name':name, 'mode':mode, 'sha1':sha1})
             newtree = Tree(sorted(dir_arr,key = lambda x:x['name']) + sorted(file_arr,key = lambda x:x['name']))
-            write_object_to_file(newtree.path, newtree.content)
+            write_to_file(newtree.path, newtree.content)
             return newtree
             
         return _build_tree(tree)            

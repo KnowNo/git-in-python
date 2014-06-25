@@ -145,6 +145,35 @@ class Parser(object):
                     }
                 ],
             },
+            'reset' : {
+                'func' : self._reset,
+                'help' : 'Reset current HEAD to the specified state',
+                'args' : [
+                    {
+                        'name' : ['commit_sha1'],
+                        'properties' :
+                        {
+                            'help' : 'Sha1 of a commit',
+                        }
+                    },
+                    {
+                        'name' : ['--soft'],
+                        'properties' :
+                        {
+                            'help' : 'Does not touch the index file or the working tree at all',
+                            'action' : 'store_true',
+                        }
+                    },
+                    {
+                        'name' : ['--hard'],
+                        'properties' :
+                        {
+                            'help' : 'Resets the index and working tree',
+                            'action' : 'store_true',
+                        }
+                    },
+                ],
+            },
             'push' : {
                 'func' : self._push,
                 'help' : 'Update remote refs along with associated objects',
@@ -180,6 +209,9 @@ class Parser(object):
     def _branch(self, args):
         Command.cmd_branch(args.name, args.is_deleted)
     
+    def _reset(self, args):
+        Command.cmd_reset(args.commit_sha1, is_soft=args.soft, is_hard=args.hard)
+        
     def _push(self, args):
         pass
 

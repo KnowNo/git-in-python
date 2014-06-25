@@ -14,6 +14,7 @@ from constants import OBJECT_DIR
 from utils import cal_sha1, read_file
 
 
+
 class BaseObject(object):
     '''
     git base object
@@ -34,8 +35,13 @@ class BaseObject(object):
 class Blob(BaseObject):
     
     def __init__(self, raw_content=None, sha1=None):
-        final_content = 'blob %d\0%s' % (len(raw_content), raw_content)  
-        super(Blob, self).__init__(final_content)
+        if sha1:
+            super(Blob, self).__init__(sha1=sha1)
+            final_content = zlib.decompress(self.content) 
+            self.raw_content = final_content[final_content.find('\0') + 1:]
+        else:
+            final_content = 'blob %d\0%s' % (len(raw_content), raw_content)  
+            super(Blob, self).__init__(final_content)
 
 class Tree(BaseObject):
     def __init__(self, args=None, sha1=None):
@@ -43,7 +49,7 @@ class Tree(BaseObject):
             super(Tree, self).__init__(sha1=sha1)
             final_content = zlib.decompress(self.content) 
             self.raw_content = final_content[final_content.find('\0') + 1:]
-            self.objects = re.findall('(\d+) (\S+)\0(.{20})', self.raw_content, re.S)
+            self.objects = re.findall('(\d+) ([^\0]+)\0(.{20})', self.raw_content, re.S)
             
         else:
             raw_content = ''
@@ -63,7 +69,7 @@ class Tree(BaseObject):
                 for new_object in new_objects:
                     queue.append([new_object[0], os.path.join(name, new_object[1]), new_object[2]])
             else:
-                res[name] = {'mode' : mode, 'sha1' : sha1}
+                res[name] = {'mode' : int(mode, 8), 'sha1' : sha1}
         return res
 
 

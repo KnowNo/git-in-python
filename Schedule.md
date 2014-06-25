@@ -4,8 +4,9 @@
 * commit
 * rm
 * log
-* status(with .gitignore support)
+* status
 * branch
+* reset
 
 ###Doing
 * push
@@ -14,5 +15,4 @@
 * clone
 * diff
 * merge
-
-......
+* ......
