@@ -153,7 +153,7 @@ class Parser(object):
                         'name' : ['commit_sha1'],
                         'properties' :
                         {
-                            'help' : 'Sha1 of a commit',
+                            'help' : 'Commit to reset',
                         }
                     },
                     {
@@ -182,7 +182,7 @@ class Parser(object):
                         'name' : ['branch'],
                         'properties' :
                         {
-                            'help' : 'Sha1 of a commit',
+                            'help' : 'Branch to checkout',
                         }
                     },
                 ],
