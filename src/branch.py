@@ -7,7 +7,7 @@ import os
 import shutil
 
 from constants import HEAD_PATH, REF_HEADS_DIR
-from utils import read_file
+from utils import read_file, write_to_file
 
 
 class Branch(object):
@@ -40,4 +40,11 @@ class Branch(object):
             print "error: Cannot delete the branch '%s' which you are currently on." % (name)
             exit(1)
         os.remove(os.path.join(REF_HEADS_DIR, name))
+    
+    def switch_branch(self, name):
+        if not self._check_branch_exists(name):
+            print "error: branch '%s' did not match any branches known to git." % (name)
+            exit(1)
+        write_to_file(HEAD_PATH, 'ref: refs/heads/%s' % name)
+            
         

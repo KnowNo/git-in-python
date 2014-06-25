@@ -174,6 +174,19 @@ class Parser(object):
                     },
                 ],
             },
+            'checkout' : {
+                'func' : self._checkout,
+                'help' : 'Checkout a branch to the working tree',
+                'args' : [
+                    {
+                        'name' : ['branch'],
+                        'properties' :
+                        {
+                            'help' : 'Sha1 of a commit',
+                        }
+                    },
+                ],
+            },
             'push' : {
                 'func' : self._push,
                 'help' : 'Update remote refs along with associated objects',
@@ -212,6 +225,9 @@ class Parser(object):
     def _reset(self, args):
         Command.cmd_reset(args.commit_sha1, is_soft=args.soft, is_hard=args.hard)
         
+    def _checkout(self, args):
+        Command.cmd_checkout(args.branch)
+    
     def _push(self, args):
         pass
 

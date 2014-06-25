@@ -7,6 +7,7 @@ import os
 
 from termcolor import colored
 
+from branch import Branch
 from constants import GIT_DIR
 from repository import Repository
 from utils import get_all_files_in_dir, filter_by_gitignore
@@ -49,23 +50,33 @@ class Command(object):
     
     @staticmethod
     def cmd_branch(name, is_deleted):
-        repo = Repository()
+        b = Branch()
         if not name:
-            for branch in repo.branch.get_all_branches():
-                print '* %s' % colored(branch, 'green') if branch == repo.branch.head_name else '  %s' % branch
+            for branch in b.get_all_branches():
+                print '* %s' % colored(branch, 'green') if branch == b.head_name else '  %s' % branch
         elif is_deleted:
-            repo.branch.delete_branch(name)
+            b.delete_branch(name)
         else :
-            repo.branch.add_branch(name)
+            b.add_branch(name)
     
     @staticmethod
     def cmd_reset(commit_sha1, is_soft, is_hard):
         repo = Repository()
+        pre_entries = dict(repo.index.entries)  
         repo.update_head_commit(commit_sha1)
         if not is_soft:
             repo.rebuild_index_from_commit(commit_sha1)
             if is_hard:
-                repo.rebuild_working_tree()
+                repo.rebuild_working_tree(pre_entries)
+    
+    @staticmethod
+    def cmd_checkout(branch):
+        b = Branch()
+        b.switch_branch(branch)
+        repo = Repository()
+        pre_entries = dict(repo.index.entries)  
+        repo.rebuild_index_from_commit(repo.branch.head_commit)
+        repo.rebuild_working_tree(pre_entries)
     
     @staticmethod
     def cmd_push():

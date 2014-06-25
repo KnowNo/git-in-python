@@ -7,12 +7,13 @@
 * status
 * branch
 * reset
+* checkout
 
 ###Doing
-* push
+* diff
 
 ###TODO
-* clone
-* diff
 * merge
+* push
+* clone
 * ......

@@ -185,7 +185,10 @@ class Repository(object):
         self.index.write_to_file()
         self.index = Index(INDEX_PATH)
     
-    def rebuild_working_tree(self):
+    def rebuild_working_tree(self, pre_entries):
+        for name in set(pre_entries).difference(set(self.index.entries)): 
+            os.remove(name)
+            
         for path, properties in self.index.entries.iteritems():
             content = Blob(sha1=properties['sha1']).raw_content
             write_to_file(path, content, mode=properties['mode'])
