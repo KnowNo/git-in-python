@@ -3,6 +3,7 @@ Created on Jun 9, 2014
 
 @author: lzrak47
 '''
+from difflib import unified_diff
 import os
 import time
 
@@ -15,7 +16,7 @@ from constants import INDEX_PATH, GIT_DIR, INIT_DIR, \
 from index import Index
 from objects import Blob, Commit, Tree
 from utils import get_all_files_in_dir, read_file, write_to_file, cal_mode, \
-    less_str, filter_by_gitignore, get_file_mode
+    less_str, filter_by_gitignore, get_file_mode, diff_file
 
 
 class Repository(object):
@@ -192,6 +193,71 @@ class Repository(object):
         for path, properties in self.index.entries.iteritems():
             content = Blob(sha1=properties['sha1']).raw_content
             write_to_file(path, content, mode=properties['mode'])
+    
+    
+    def diff_between_working_tree_and_index(self):
+        res = ''
+        for path in self._get_unstaged_files()['modified']:
+            old_file = {
+                'path' : path,
+                'sha1' : self.index.entries[path]['sha1'],
+                'mode' : self.index.entries[path]['mode'],
+                'content' : Blob(sha1=self.index.entries[path]['sha1']).raw_content,
+            }
+            
+            f = read_file(path)
+            blob = Blob(f)
+            new_file = {
+                'path' : path,
+                'sha1' : blob.sha1,
+                'mode' : get_file_mode(path),
+                'content' : f,
+            }
+            res += diff_file(old_file, new_file)
+        less_str(res)
+        
+    def diff_between_index_and_head_tree(self):
+        tree = Tree(sha1=Commit(sha1=self.branch.head_commit).tree)
+        tree_objects = tree.parse_objects()
+        res = ''
+        for path in self._get_uncommitted_files()['modified']:
+            old_file = {
+                'path' : path,
+                'sha1' : tree_objects[path]['sha1'],
+                'mode' : tree_objects[path]['mode'],
+                'content' : Blob(sha1=tree_objects[path]['sha1']).raw_content,
+            }
+            
+            new_file = {
+                'path' : path,
+                'sha1' : self.index.entries[path]['sha1'],
+                'mode' : self.index.entries[path]['mode'],
+                'content' : Blob(sha1=self.index.entries[path]['sha1']).raw_content,
+            }
+            res += diff_file(old_file, new_file)
+            
+        for path in self._get_uncommitted_files()['deleted']:
+            old_file = {
+                'path' : path,
+                'sha1' : tree_objects[path]['sha1'],
+                'mode' : tree_objects[path]['mode'],
+                'content' : Blob(sha1=tree_objects[path]['sha1']).raw_content,
+            }
+            new_file = {'path':None, 'sha1':'0' * 7, 'mode': None, 'content':'',}
+            res += diff_file(old_file, new_file)
+            
+        for path in self._get_uncommitted_files()['new file']:
+            old_file = {'path':None, 'sha1':'0' * 7, 'mode': None, 'content':'',}
+            new_file = {
+                'path' : path,
+                'sha1' : self.index.entries[path]['sha1'],
+                'mode' : self.index.entries[path]['mode'],
+                'content' : Blob(sha1=self.index.entries[path]['sha1']).raw_content,
+            }
+            res += diff_file(old_file, new_file)
+        less_str(res)
+            
+            
             
         
         

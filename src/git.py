@@ -187,6 +187,20 @@ class Parser(object):
                     },
                 ],
             },
+            'diff' : {
+                'func' : self._diff,
+                'help' : 'Show changes between commits, commit and working tree, etc',
+                'args' : [
+                    {
+                        'name' : ['--cached'],
+                        'properties' :
+                        {
+                            'help' : 'Show changes between and the index and the head tree',
+                            'action' : 'store_true',
+                        }
+                    },
+                ],
+            },
             'push' : {
                 'func' : self._push,
                 'help' : 'Update remote refs along with associated objects',
@@ -227,6 +241,9 @@ class Parser(object):
         
     def _checkout(self, args):
         Command.cmd_checkout(args.branch)
+    
+    def _diff(self, args):
+        Command.cmd_diff(args.cached)
     
     def _push(self, args):
         pass

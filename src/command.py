@@ -79,6 +79,13 @@ class Command(object):
         repo.rebuild_working_tree(pre_entries)
     
     @staticmethod
+    def cmd_diff(cached):
+        if cached:
+            Repository().diff_between_index_and_head_tree()
+        else:
+            Repository().diff_between_working_tree_and_index()
+    
+    @staticmethod
     def cmd_push():
         pass
 

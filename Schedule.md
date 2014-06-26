@@ -8,12 +8,13 @@
 * branch
 * reset
 * checkout
-
-###Doing
 * diff
 
-###TODO
-* merge
+###Doing
 * push
+
+###TODO
 * clone
+* merge
+* pull
 * ......
