@@ -3,7 +3,6 @@ Created on Jun 9, 2014
 
 @author: lzrak47
 '''
-from difflib import unified_diff
 import os
 import time
 
