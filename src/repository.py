@@ -214,6 +214,15 @@ class Repository(object):
                 'content' : f,
             }
             res += diff_file(old_file, new_file)
+        for path in self._get_unstaged_files()['deleted']:
+            old_file = {
+                'path' : path,
+                'sha1' : self.index.entries[path]['sha1'],
+                'mode' : self.index.entries[path]['mode'],
+                'content' : Blob(sha1=self.index.entries[path]['sha1']).raw_content,
+            }
+            new_file = {'path':None, 'sha1':'0' * 7, 'mode': None, 'content':'',}
+            res += diff_file(old_file, new_file)
         less_str(res)
         
     def diff_between_index_and_head_tree(self):
