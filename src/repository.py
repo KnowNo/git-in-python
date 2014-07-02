@@ -121,7 +121,11 @@ class Repository(object):
 
     def _get_uncommitted_files(self):
         if not self.branch.head_commit:
-            return {'new file' : self.index.entries}
+            return {
+                'modified' : None,
+                'deleted' : None,
+                'new file' : self.index.entries,
+            }
 
         tree = Tree(sha1=Commit(sha1=self.branch.head_commit).tree)
         tree_objects = tree.parse_objects()
