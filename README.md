@@ -1,5 +1,5 @@
 ##Overview
-This is the git-in-python project, for **nix* environment.
+This is the git-in-python project, for *nix environment.
 
 It aims to rewrite Git in Python, perhaps with some C code for high performance.
 
