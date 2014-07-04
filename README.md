@@ -1,9 +1,10 @@
 ##Overview
-This is the git-in-python project, just for *nix environment.
+This is the git-in-python project, for **nix* environment.
 
 It aims to rewrite Git in Python, perhaps with some C code for high performance.
 
-[git.py](https://github.com/lizherui/git-in-python/blob/master/src/git.py) is the entrance of the whole project, 
+
+The [git.py](https://github.com/lizherui/git-in-python/blob/master/src/git.py) is the entrance of the whole project.
 
 Before starting, please read the [CodingStyle](https://github.com/lizherui/git-in-python/blob/master/CodingStyle.md) and the [Schedule](https://github.com/lizherui/git-in-python/blob/master/Schedule.md).
 
@@ -11,10 +12,10 @@ Before running, make sure having installed all the 3rd-party packages:
 
     pip install -r requirements.txt
 
-Before contrubuting, make sure having passed all the unit tests:
+Before contributing, make sure having passed all the unit tests:
     
-    cd src/test
-    ./run_test.sh
+    cd src/tests
+    ./run_all_tests.sh
 
 
 
