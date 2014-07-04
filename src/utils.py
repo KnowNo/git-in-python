@@ -75,7 +75,7 @@ def filter_by_gitignore(raw_list):
     else:
         with open(GITIGNORE_PATH, 'r') as fh:
             spec = pathspec.PathSpec.from_lines(pathspec.GitIgnorePattern, fh)
-        return set(raw_list).difference(spec.match_files(raw_list))
+        return list(set(raw_list).difference(spec.match_files(raw_list)))
     
 def diff_file(old_file, new_file):
     if old_file['path']:

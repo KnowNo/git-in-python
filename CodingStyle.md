@@ -2,9 +2,7 @@ For code written in Python 2.7, please follow the [PEP8](http://legacy.python.or
 
 For code written in C maybe for high performance, please follow [The Official Git Coding Style](https://github.com/git/git/blob/master/Documentation/CodingGuidelines)  by Linus Torvalds.
 
-If you want to write some unit testing, please write them in the 'unittest' dir.
-
-I don't like unit testing at all personally. I mean, if you really like it, do it, I won't oppose it.
+If you want to write some unit testing, please write them in the 'src/test' dir.
 
 Everything shoud be written in English, includes comments and documents. 
 

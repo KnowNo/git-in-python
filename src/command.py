@@ -10,7 +10,7 @@ from termcolor import colored
 from branch import Branch
 from constants import GIT_DIR
 from repository import Repository
-from utils import get_all_files_in_dir, filter_by_gitignore
+from utils import get_all_files_in_dir, filter_by_gitignore, less_str
 
 
 class Command(object):
@@ -20,8 +20,8 @@ class Command(object):
     '''
 
     @staticmethod
-    def cmd_init(workspace, bare):
-        Repository.create_repository(workspace, bare)
+    def cmd_init(workspace):
+        Repository.create_repository(workspace)
 
     @staticmethod
     def cmd_add(file):
@@ -31,7 +31,7 @@ class Command(object):
             Repository().stage([file])
 
     @staticmethod
-    def cmd_rm(file, cached):
+    def cmd_rm(file, cached=False):
         Repository().delete(file)
         if not cached:
             os.remove(file)
@@ -41,15 +41,19 @@ class Command(object):
         Repository().commit(msg)
 
     @staticmethod
-    def cmd_log(num):
-        Repository().show_log(num)
+    def cmd_log(num, use_less=True):
+        res = Repository().show_log(num)
+        if use_less:
+            less_str(res)
+        else:
+            print res
     
     @staticmethod
     def cmd_status():
         Repository().show_status()
     
     @staticmethod
-    def cmd_branch(name, is_deleted):
+    def cmd_branch(name, is_deleted=False):
         b = Branch()
         if not name:
             for branch in b.get_all_branches():
@@ -60,7 +64,7 @@ class Command(object):
             b.add_branch(name)
     
     @staticmethod
-    def cmd_reset(commit_sha1, is_soft, is_hard):
+    def cmd_reset(commit_sha1, is_soft=False, is_hard=False):
         repo = Repository()
         pre_entries = dict(repo.index.entries)  
         repo.update_head_commit(commit_sha1)
@@ -79,11 +83,15 @@ class Command(object):
         repo.rebuild_working_tree(pre_entries)
     
     @staticmethod
-    def cmd_diff(cached):
+    def cmd_diff(cached=False, use_less=True):
         if cached:
-            Repository().diff_between_index_and_head_tree()
+            res = Repository().diff_between_index_and_head_tree()
         else:
-            Repository().diff_between_working_tree_and_index()
+            res = Repository().diff_between_working_tree_and_index()
+        if use_less:
+            less_str(res)
+        else:
+            print res
     
     @staticmethod
     def cmd_push():

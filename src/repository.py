@@ -45,13 +45,12 @@ class Repository(object):
             print 'stage file %s error: %s' % (file, e)
 
     @staticmethod
-    def create_repository(workspace, bare=False):
+    def create_repository(workspace):
         if not os.path.exists(workspace):
             os.mkdir(workspace)
         os.chdir(workspace)
 
-        if not bare:
-            os.mkdir(GIT_DIR)
+        os.mkdir(GIT_DIR)
 
         for new_dir in INIT_DIR:
             os.mkdir(new_dir)
@@ -66,7 +65,7 @@ class Repository(object):
             'core': {
                 'repositoryformatversion' : '0',
                 'filemode' : 'true',
-                'bare' : str(bare).lower(),
+                'bare' : 'true',
                 'logallrefupdates' : 'true',
             }
         }
@@ -99,13 +98,13 @@ class Repository(object):
             parent_commit = Commit(sha1=cur_commit.parent_sha1)
             print_str += '\n%s' % (parent_commit.raw_content)
             cur_commit = parent_commit
-        less_str(print_str)
+        return print_str
 
-    def _get_untracked_files(self):
+    def get_untracked_files(self):
         raw_list = list(set(self.working_tree_files).difference(set(list(self.index.entries))))
         return filter_by_gitignore(raw_list)
 
-    def _get_unstaged_files(self):
+    def get_unstaged_files(self):
         res = {
             'modified': [],
             'deleted' : [],
@@ -119,11 +118,11 @@ class Repository(object):
         return res
 
 
-    def _get_uncommitted_files(self):
+    def get_uncommitted_files(self):
         if not self.branch.head_commit:
             return {
-                'modified' : None,
-                'deleted' : None,
+                'modified' : [],
+                'deleted' : [],
                 'new file' : self.index.entries,
             }
 
@@ -133,14 +132,14 @@ class Repository(object):
             'modified': [name for name in set(self.index.entries).intersection(set(tree_objects)) \
                          if self.index.entries[name]['sha1'] != tree_objects[name]['sha1'] or \
                          self.index.entries[name]['mode'] != tree_objects[name]['mode']],
-            'deleted' : set(tree_objects).difference(self.index.entries),
-            'new file' : set(self.index.entries).difference(set(tree_objects)),
+            'deleted' : list(set(tree_objects).difference(self.index.entries)),
+            'new file' : list(set(self.index.entries).difference(set(tree_objects))),
         }
 
     def show_status(self):
-        untracked_files = self._get_untracked_files()
-        unstaged_files = self._get_unstaged_files()
-        uncommitted_files = self._get_uncommitted_files()
+        untracked_files = self.get_untracked_files()
+        unstaged_files = self.get_unstaged_files()
+        uncommitted_files = self.get_uncommitted_files()
         print_str = 'On branch %s\n' % (self.branch.head_name)
         
         if uncommitted_files['modified'] or uncommitted_files['deleted'] or uncommitted_files['new file']:
@@ -200,7 +199,7 @@ class Repository(object):
     
     def diff_between_working_tree_and_index(self):
         res = ''
-        for path in self._get_unstaged_files()['modified']:
+        for path in self.get_unstaged_files()['modified']:
             old_file = {
                 'path' : path,
                 'sha1' : self.index.entries[path]['sha1'],
@@ -217,7 +216,7 @@ class Repository(object):
                 'content' : f,
             }
             res += diff_file(old_file, new_file)
-        for path in self._get_unstaged_files()['deleted']:
+        for path in self.get_unstaged_files()['deleted']:
             old_file = {
                 'path' : path,
                 'sha1' : self.index.entries[path]['sha1'],
@@ -226,13 +225,13 @@ class Repository(object):
             }
             new_file = {'path':None, 'sha1':'0' * 7, 'mode': None, 'content':'',}
             res += diff_file(old_file, new_file)
-        less_str(res)
+        return res
         
     def diff_between_index_and_head_tree(self):
         tree = Tree(sha1=Commit(sha1=self.branch.head_commit).tree)
         tree_objects = tree.parse_objects()
         res = ''
-        for path in self._get_uncommitted_files()['modified']:
+        for path in self.get_uncommitted_files()['modified']:
             old_file = {
                 'path' : path,
                 'sha1' : tree_objects[path]['sha1'],
@@ -248,7 +247,7 @@ class Repository(object):
             }
             res += diff_file(old_file, new_file)
             
-        for path in self._get_uncommitted_files()['deleted']:
+        for path in self.get_uncommitted_files()['deleted']:
             old_file = {
                 'path' : path,
                 'sha1' : tree_objects[path]['sha1'],
@@ -258,7 +257,7 @@ class Repository(object):
             new_file = {'path':None, 'sha1':'0' * 7, 'mode': None, 'content':'',}
             res += diff_file(old_file, new_file)
             
-        for path in self._get_uncommitted_files()['new file']:
+        for path in self.get_uncommitted_files()['new file']:
             old_file = {'path':None, 'sha1':'0' * 7, 'mode': None, 'content':'',}
             new_file = {
                 'path' : path,
@@ -267,14 +266,5 @@ class Repository(object):
                 'content' : Blob(sha1=self.index.entries[path]['sha1']).raw_content,
             }
             res += diff_file(old_file, new_file)
-        less_str(res)
+        return res
             
-            
-            
-        
-        
-        
-        
-        
-        
-        

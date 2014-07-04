@@ -7,7 +7,6 @@ Created on Jun 8, 2014
 '''
 
 import argparse
-import os
 import sys
 
 from command import Command
@@ -31,18 +30,9 @@ class Parser(object):
                         {
                             'help' : 'Directory of the git repository',
                             'nargs' : '?', 
-                            'default' : '',
+                            'default' : './',
                         },
                     },
-                          
-                    {
-                        'name' : ['--bare'],
-                        'properties' :
-                        {
-                            'help' : 'Create a bare repository',
-                            'action' : 'store_true',
-                        }
-                    }
                 ]
             },
                     
@@ -215,8 +205,7 @@ class Parser(object):
     }
 
     def _init(self, args):
-        workspace = os.path.join(os.getcwd(), args.directory)
-        Command.cmd_init(workspace=workspace, bare=args.bare)
+        Command.cmd_init(workspace=args.directory)
 
     def _add(self, args):
         Command.cmd_add(args.file)
