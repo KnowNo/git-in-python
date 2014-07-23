@@ -50,15 +50,16 @@ class Repository(object):
             os.mkdir(workspace)
         os.chdir(workspace)
 
-        os.mkdir(GIT_DIR)
+        if not os.path.exists(GIT_DIR):
+            os.mkdir(GIT_DIR)
 
-        for new_dir in INIT_DIR:
-            os.mkdir(new_dir)
+            for new_dir in INIT_DIR:
+                os.mkdir(new_dir)
 
-        for file_and_content in INIT_FILE:
-            file_name = file_and_content[0]
-            content = file_and_content[1]
-            write_to_file(file_name, content)
+            for file_and_content in INIT_FILE:
+                file_name = file_and_content[0]
+                content = file_and_content[1]
+                write_to_file(file_name, content)
 
 
         init_config_dict = {

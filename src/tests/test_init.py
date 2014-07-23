@@ -35,6 +35,18 @@ class TestInit(unittest.TestCase):
         self._check_dirs_and_files(workspace)
         shutil.rmtree(GIT_DIR)
 
+    def test_init_in_existing_repository(self):
+        workspace = "test"
+        Command.cmd_init(workspace)
+        os.chdir('..')
+        try:
+            Command.cmd_init(workspace)
+        except OSError:
+            self.assertEqual(1, 2, "Reinitialized existing repository failed")
+        finally:
+            os.chdir('..')
+            shutil.rmtree(workspace)
+
 
 if __name__ == "__main__":
     unittest.main()
